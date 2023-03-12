@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
  */
 class CardListFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
-    private val cardsAdapter = CardRecyclerViewAdapter(mutableListOf())
+    private val cardsAdapter = CardRecyclerViewAdapter(mutableListOf(), ::onCardClick)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +31,8 @@ class CardListFragment : Fragment() {
             adapter = cardsAdapter
         }
     }
+
+    private fun onCardClick(cardId: Int) = viewModel.onCardClick(cardId)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

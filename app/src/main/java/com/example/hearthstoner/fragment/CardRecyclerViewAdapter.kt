@@ -7,17 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.hearthstoner.R
 import com.example.hearthstoner.data.Card
-import com.example.hearthstoner.databinding.FragmentCardBinding
-import com.example.hearthstoner.fragment.placeholder.PlaceholderContent.PlaceholderItem
+import com.example.hearthstoner.databinding.FragmentCardListItemBinding
 
 class CardRecyclerViewAdapter(
-    var items: List<Card>
+    var items: List<Card>,
+    private val onClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<CardRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentCardBinding.inflate(
+            FragmentCardListItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -33,11 +33,15 @@ class CardRecyclerViewAdapter(
             .centerCrop()
             .placeholder(R.drawable.ic_launcher_foreground)
             .into(holder.image)
+
+        holder.itemView.setOnClickListener {
+            onClickListener.invoke(item.cardBackId)
+        }
     }
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(binding: FragmentCardBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(binding: FragmentCardListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val image: ImageView = binding.cardImage
     }
 }
