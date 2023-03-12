@@ -46,7 +46,6 @@ class CardDetailsFragment : Fragment() {
         Glide
             .with(this)
             .load(card.imageUrl)
-            .centerCrop()
             .placeholder(R.drawable.ic_launcher_foreground)
             .into(binding.cardDetailsImage)
 

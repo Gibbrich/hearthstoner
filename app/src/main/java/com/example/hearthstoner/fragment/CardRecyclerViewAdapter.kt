@@ -30,7 +30,6 @@ class CardRecyclerViewAdapter(
         Glide
             .with(holder.image.context)
             .load(item.imageUrl)
-            .centerCrop()
             .placeholder(R.drawable.ic_launcher_foreground)
             .into(holder.image)
 
