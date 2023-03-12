@@ -1,35 +1,28 @@
-package com.example.hearthstoner.data
+package com.example.hearthstoner.di
 
 import android.util.Log
+import com.example.hearthstoner.data.HeaderInterceptor
 import com.example.hearthstoner.data.api.Api
+import dagger.Module
+import dagger.Provides
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
+@Module
 class ApiModule {
     companion object {
         private const val BASE_URL = "https://omgvamp-hearthstone-v1.p.rapidapi.com"
-        private val HEADER_API_KEY = "X-RapidAPI-Key" to "75a8481d65msh0a7f1d988198a92p18d92cjsn27b9a9e8964c"
-        private val HEADER_API_HOST = "X-RapidAPI-Host" to "omgvamp-hearthstone-v1.p.rapidapi.com"
     }
 
-//    private fun execute() {
-//        val client = OkHttpClient()
-//
-//        val request = Request.Builder()
-//            .url("https://omgvamp-hearthstone-v1.p.rapidapi.com/cardbacks")
-//            .get()
-//            .addHeader("X-RapidAPI-Key", "75a8481d65msh0a7f1d988198a92p18d92cjsn27b9a9e8964c")
-//            .addHeader("X-RapidAPI-Host", "omgvamp-hearthstone-v1.p.rapidapi.com")
-//            .build()
-//
-//        val response = client.newCall(request).execute()
-//    }
-
+    @Provides
+    @Singleton
     fun provideApi(retrofit: Retrofit): Api = retrofit.create(Api::class.java)
 
+    @Provides
+    @Singleton
     fun provideClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
@@ -37,6 +30,8 @@ class ApiModule {
             .build()
     }
 
+    @Provides
+    @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         val logger = HttpLoggingInterceptor.Logger { message -> Log.d("HttpLoggingInterceptor", message) }
         val loggingInterceptor = HttpLoggingInterceptor(logger)
@@ -44,6 +39,8 @@ class ApiModule {
         return loggingInterceptor
     }
 
+    @Provides
+    @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(client)

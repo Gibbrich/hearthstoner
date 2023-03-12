@@ -6,6 +6,7 @@ import okhttp3.Response
 
 class HeaderInterceptor: Interceptor {
     private val headers = mutableMapOf(
+        // todo - move to secrets
         "X-RapidAPI-Key" to "75a8481d65msh0a7f1d988198a92p18d92cjsn27b9a9e8964c",
         "X-RapidAPI-Host" to "omgvamp-hearthstone-v1.p.rapidapi.com"
     )
