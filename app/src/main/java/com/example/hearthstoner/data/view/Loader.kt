@@ -5,28 +5,43 @@ import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.animation.doOnEnd
+import com.example.hearthstoner.R
 import com.google.android.material.math.MathUtils
 import kotlin.math.cos
 import kotlin.math.sin
 
-class Loader(context: Context, attrs: AttributeSet): View(context, attrs) {
+class Loader(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var dotOffsetFactor = 0f
     private var radius: Float = 0f
     private var angle = 0.0f
 
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.FILL
-        color = Color.CYAN
-    }
+    private val paint: Paint
 
     private val animator: AnimatorSet
 
     init {
+        context.theme
+            .obtainStyledAttributes(attrs, R.styleable.Loader, 0, 0)
+            .apply {
+                try {
+                    val color = getColor(
+                        R.styleable.Loader_color,
+                        androidx.appcompat.R.attr.colorPrimary
+                    )
+
+                    paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                        style = Paint.Style.FILL
+                        this.color = color
+                    }
+                } finally {
+                    recycle()
+                }
+            }
+
         val rotateAnimator = ValueAnimator.ofFloat(0f, 360f).apply {
             duration = 1000
             addUpdateListener {
