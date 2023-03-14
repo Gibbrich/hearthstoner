@@ -1,4 +1,4 @@
-package com.example.hearthstoner.data.view
+package com.example.hearthstoner.view
 
 import android.animation.Animator
 import android.animation.AnimatorSet
