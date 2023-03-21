@@ -55,11 +55,8 @@ class CardDetailsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(cardId: Int) =
-            CardDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(CARD_ID, cardId)
-                }
-            }
+        fun getArguments(cardId: Int) = Bundle().apply {
+            putInt(CARD_ID, cardId)
+        }
     }
 }

@@ -3,27 +3,19 @@ package com.example.hearthstoner.activity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.example.hearthstoner.R
 import com.example.hearthstoner.fragment.CardDetailsFragment
-import com.example.hearthstoner.fragment.CardListFragment
 import com.example.hearthstoner.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add<CardListFragment>(R.id.fragment_container_view)
-            }
-        }
+        setContentView(R.layout.activity_main)
 
         lifecycleScope.launch {
             viewModel.cardClickEvent.collect(::onCardClicked)
@@ -31,10 +23,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun onCardClicked(cardId: Int) {
-        supportFragmentManager.commit {
-            replace(R.id.fragment_container_view, CardDetailsFragment.newInstance(cardId))
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
+        findNavController(R.id.fragment_container_view).navigate(R.id.action_cardListFragment_to_cardDetailsFragment, CardDetailsFragment.getArguments(cardId))
     }
 }
