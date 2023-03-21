@@ -38,13 +38,8 @@ class CardListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.cardBacks.collect(::handleCardBacks)
+            viewModel.cardBacks.collect(cardsAdapter::updateItems)
         }
-    }
-
-    private fun handleCardBacks(cards: List<Card> ) {
-        cardsAdapter.items = cards
-        cardsAdapter.notifyDataSetChanged()
     }
 
     companion object {
