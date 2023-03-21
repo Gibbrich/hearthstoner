@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
  */
 class CardListFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
-    private val cardsAdapter = CardRecyclerViewAdapter(mutableListOf(), ::onCardClick)
+    private val cardsAdapter = CardRecyclerViewAdapter(::onCardClick)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +38,7 @@ class CardListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.cardBacks.collect(cardsAdapter::updateItems)
+            viewModel.cardBacks.collect(cardsAdapter::submitList)
         }
     }
 

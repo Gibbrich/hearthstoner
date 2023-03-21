@@ -6,12 +6,15 @@ import com.example.hearthstoner.di.ApiModule
 import com.example.hearthstoner.data.Card
 import com.example.hearthstoner.data.api.Api
 import com.example.hearthstoner.di.DI
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MainViewModel : ViewModel() {

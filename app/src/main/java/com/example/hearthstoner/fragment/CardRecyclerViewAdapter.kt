@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.hearthstoner.R
@@ -11,16 +12,8 @@ import com.example.hearthstoner.data.Card
 import com.example.hearthstoner.databinding.FragmentCardListItemBinding
 
 class CardRecyclerViewAdapter(
-    private var items: List<Card>,
     private val onClickListener: (Int) -> Unit
-) : RecyclerView.Adapter<CardRecyclerViewAdapter.ViewHolder>() {
-
-    fun updateItems(newItems: List<Card>) {
-        val callback = CardDiffCallback(items, newItems)
-        val diff = DiffUtil.calculateDiff(callback)
-        items = newItems
-        diff.dispatchUpdatesTo(this)
-    }
+) : ListAdapter<Card, CardRecyclerViewAdapter.ViewHolder>(CardItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -34,7 +27,7 @@ class CardRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val item = currentList[position]
         Glide
             .with(holder.image.context)
             .load(item.imageUrl)
@@ -46,25 +39,15 @@ class CardRecyclerViewAdapter(
         }
     }
 
-    override fun getItemCount(): Int = items.size
-
     inner class ViewHolder(binding: FragmentCardListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val image: ImageView = binding.cardImage
     }
 }
 
-class CardDiffCallback(
-    private val old: List<Card>,
-    private val new: List<Card>
-) : DiffUtil.Callback() {
-    override fun getOldListSize(): Int = old.size
+private class CardItemCallback: DiffUtil.ItemCallback<Card>() {
+    override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean =
+        oldItem.cardBackId == newItem.cardBackId
 
-    override fun getNewListSize(): Int = new.size
-
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        old[oldItemPosition].cardBackId == new[newItemPosition].cardBackId
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        old[oldItemPosition] == new[newItemPosition]
+    override fun areContentsTheSame(oldItem: Card, newItem: Card): Boolean = oldItem == newItem
 }
